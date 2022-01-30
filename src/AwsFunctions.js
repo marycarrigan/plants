@@ -1,11 +1,5 @@
 import * as AWS from 'aws-sdk'
 
-const configuration = {
-    region: 'us-west-2',
-    secretAccessKey: 'X7QsiwETWsIevpP0BaiG+Z2OSzma+nueEBratvea',
-    accessKeyId: 'AKIAU4QKZUFBK2QF2AVD'
-}
-
 AWS.config.update(configuration)
 
 const ddb = new AWS.DynamoDB();
