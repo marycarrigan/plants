@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk'
 
+
 AWS.config.update(configuration)
 
 const ddb = new AWS.DynamoDB();
@@ -22,9 +23,6 @@ export const getImage = async (imageName) => {
 }
 
 export const addData = async (tableName, name, date, imageName) => {
-    var paramsFetch = {
-        TableName: tableName
-    }
     var params = {
         TableName: tableName,
         Item: {
@@ -58,5 +56,5 @@ export const uploadImage = async (file) => {
         }
       });
 
-    upload.promise();
+    return upload.promise();
 }

@@ -24,6 +24,7 @@ const PlantsTable = ({ plants, refresh }) => {
                     <img
                       src={`https://plants-carrigan.s3.amazonaws.com/images/${plant.image}`}
                       style={{ maxWidth: "8rem", maxHeight: "8rem" }}
+                      alt={plant.name}
                     />
                   </Box>
                 )}

@@ -4,7 +4,7 @@ import LeafIcon from "../icon/LeafIcon.svg";
 import AddPlant from "./AddPlant";
 import { useState, useEffect } from "react";
 import PlantsTable from "./PlantsTable";
-import { fetchData, getImage } from "../AwsFunctions";
+import { fetchData } from "../AwsFunctions";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -40,6 +40,9 @@ const Home = () => {
           </Box>
         </Box>
         <Button color="secondary" onClick={() => setAddPlant(true)}>Add Plant</Button>
+        <Box>
+          Total Plants: {plants.length}
+        </Box>
       </AppBar>
       <AddPlant open={addPlant} setOpen={setAddPlant} refresh={refresh}/>
       <PlantsTable refresh={refresh} plants={plants}/>
