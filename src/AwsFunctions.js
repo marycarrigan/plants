@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk'
 
-
 AWS.config.update(configuration)
 
 const ddb = new AWS.DynamoDB();
@@ -22,22 +21,41 @@ export const getImage = async (imageName) => {
     return new AWS.S3().getObject(params).promise();
 }
 
-export const addData = async (tableName, name, date, imageName) => {
+export const addData = async (name, date, image) => {
+    const item = image ?
+    {
+        'name': {S: name},
+        'id': {N: (Date.now() + Math.random()).toString()},
+        'date': {S: date ? date.toString() : "Unknown"},
+        'image': {S: image.name}
+    } :
+    {
+        'name': {S: name},
+        'id': {N: (Date.now() + Math.random()).toString()},
+        'date': {S: date ? date.toString() : "Unknown"},
+    };
+    
     var params = {
-        TableName: tableName,
-        Item: {
-            'name': {S: name},
-            'id': {N: (Date.now() + Math.random()).toString()},
-            'date': {S: date ? date.toString() : "Unknown"},
-            'image': {S: imageName}
-        }
+        TableName: "plants",
+        Item: item
+    }
+
+    if(image){
+        uploadImage(image).promise().catch((err) => {
+            console.log(err)
+            return Promise.reject();
+        })
     }
     return ddb.putItem(params).promise();
   }
 
-export const deleteData = async (tableName, id) => {
+export const editData = async (id, data) => {
+    console.log("edit")
+}
+
+export const deleteData = async (id) => {
     var params = {
-        TableName: tableName,
+        TableName: "plants",
         Key: {
           'id': {N: id.toString()}
         }
