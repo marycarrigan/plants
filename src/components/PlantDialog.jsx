@@ -12,17 +12,17 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import { useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { addData, uploadImage } from "../AwsFunctions";
+import { addData, editData } from "../AwsFunctions";
 
-const AddPlant = ({ open, setOpen, refresh }) => {
-  const [date, setDate] = useState(null);
-  const [name, setName] = useState(null);
+const PlantDialog = ({ open, setOpen, refresh, type, plant }) => {
+  const [date, setDate] = useState("");
+  const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const clear = () => {
-    setDate(null);
-    setName(null);
+    setDate("");
+    setName("");
     setImage(null);
     setErrorMessage(null);
     refresh();
@@ -30,21 +30,13 @@ const AddPlant = ({ open, setOpen, refresh }) => {
 
   const submitPlant = async () => {
     setLoading(true);
-    addData("plants", name, date, image.name)
+    const submitFunction = type === "Edit" ? editData : addData;
+    submitFunction(name, date, image)
       .then(() => {
-        uploadImage(image)
-          .then(() => {
-            close();
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-            setErrorMessage(
-              "Error occured when uploading image. Plant has been saved."
-            );
-          });
+        close();
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setLoading(false);
         setErrorMessage("Error occured when saving plant.");
       });
@@ -58,7 +50,7 @@ const AddPlant = ({ open, setOpen, refresh }) => {
 
   return (
     <Dialog open={open} onClose={close}>
-      <DialogTitle>Add Plant</DialogTitle>
+      <DialogTitle>{type === "Edit" ? "Edit Plant" : "Add Plant"}</DialogTitle>
       <DialogContent>
         {loading && (
           <Box display="flex" justifyContent="center">
@@ -73,6 +65,7 @@ const AddPlant = ({ open, setOpen, refresh }) => {
                   setName(e.target.value);
                 }}
                 label="Name"
+                defaultValue={plant?.name}
                 fullWidth
               />
             </Box>
@@ -80,7 +73,7 @@ const AddPlant = ({ open, setOpen, refresh }) => {
               <Box p={1}>
                 <DatePicker
                   label="Date Acquired"
-                  value={date}
+                  defaultValue={plant?.date}
                   onChange={(newValue) => {
                     setDate(newValue);
                   }}
@@ -111,11 +104,11 @@ const AddPlant = ({ open, setOpen, refresh }) => {
       </DialogContent>
       <DialogActions>
         <Button disabled={loading} onClick={submitPlant}>
-          Add Plant
+          Save Plant
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddPlant;
+export default PlantDialog;

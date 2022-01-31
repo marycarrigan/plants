@@ -1,15 +1,26 @@
 import { Card, CardContent, Button, Box } from "@mui/material";
 import { deleteData } from "../AwsFunctions";
+import {useState} from "react";
+import PlantDialog from "./PlantDialog";
 
 const PlantsTable = ({ plants, refresh }) => {
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedPlant, setSelectedPlant] = useState(null);
+
   const deletePlant = (id) => {
-    deleteData("plants", id).then(() => {
+    deleteData(id).then(() => {
       refresh();
     });
   };
 
+  const editPlant = (plant) => {
+    setEditOpen(true);
+    setSelectedPlant(plant);
+  }
+
   return (
     <>
+      <PlantDialog type={"Edit"} open={editOpen} setOpen={setEditOpen} refresh={refresh} plant={selectedPlant}/>
       {plants?.map((plant) => (
         <Card key={plant.id}>
           <CardContent>
@@ -37,8 +48,10 @@ const PlantsTable = ({ plants, refresh }) => {
                   </Box>
                 </Box>
               </Box>
-
-              <Box>
+              <Box flex-direction="column" display="flex">
+                <Button onClick={() => editPlant(plant)}>
+                  Edit
+                </Button>
                 <Button
                   onClick={() => {
                     deletePlant(plant.id);

@@ -1,7 +1,7 @@
 import { Box, AppBar, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import LeafIcon from "../icon/LeafIcon.svg";
-import AddPlant from "./AddPlant";
+import PlantDialog from "./PlantDialog";
 import { useState, useEffect } from "react";
 import PlantsTable from "./PlantsTable";
 import { fetchData } from "../AwsFunctions";
@@ -40,11 +40,11 @@ const Home = () => {
           </Box>
         </Box>
         <Button color="secondary" onClick={() => setAddPlant(true)}>Add Plant</Button>
-        <Box>
+        <Box px={2}>
           Total Plants: {plants.length}
         </Box>
       </AppBar>
-      <AddPlant open={addPlant} setOpen={setAddPlant} refresh={refresh}/>
+      <PlantDialog type={"Add"} open={addPlant} setOpen={setAddPlant} refresh={refresh}/>
       <PlantsTable refresh={refresh} plants={plants}/>
     </>
   );
