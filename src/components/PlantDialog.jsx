@@ -72,6 +72,7 @@ const PlantDialog = ({ open, setOpen, refresh, type, plant }) => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <Box p={1}>
                 <DatePicker
+                  views={['year', 'month']}
                   label="Date Acquired"
                   defaultValue={plant?.date}
                   onChange={(newValue) => {

@@ -12,7 +12,7 @@ export const theme = createTheme({
       main: "#0E5225"
     },
     secondary: {
-      main: "#FFFFF"
+      main: "#FFFFFF"
     }
   },
   overrides: {
